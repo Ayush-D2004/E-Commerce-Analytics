@@ -23,13 +23,13 @@ The notebooks are organized into a clear, sequential pipeline:
 │ 03_Sales_and_Product_        │ │ 04_Customer_Analytics.ipynb  │
 │ Analysis.ipynb               │ │                              │
 │ • Category Pareto (80/20)    │ │ • Repeat Purchase Rate       │
-│ • Geographic State Demand    │ │ • RFM Behavioral Clustering  │
+│ • Geographic State Demand    │ │ • RFM Behavioral Segmentation│
 └──────────────┬───────────────┘ └──────────────┬───────────────┘
                │                                │
                └───────────────┬────────────────┘
                                ▼
 ┌──────────────────────────────────────────────┐
-│  05_Customer_Experience.ipynb                │  ──> Logistics SLA, Lead Times & Review Score Impact
+│  05_Customer_Experience.ipynb                │  ──> Logistics SLA, Lead Times & Review Score Analysis
 └──────────────────────┬───────────────────────┘
                        │ Delivery & Feedback Data
 ┌──────────────────────▼───────────────────────┐
@@ -77,7 +77,7 @@ The notebooks are organized into a clear, sequential pipeline:
 **Purpose**: Product performance, category contribution, Pareto analysis, and regional sales distribution.
 
 - **Key Operations**:
-  - **Pareto Analysis (80/20 Rule)**: Ranked categories by cumulative sales. Found that the top 7 categories (`health_beauty`, `watches_gifts`, `bed_bath_table`, `sports_leisure`, `computers_accessories`, `furniture_decor`, `cool_stuff`) generate over **50%** of marketplace GMV.
+  - **Pareto Analysis (80/20 Rule)**: Ranked categories by cumulative sales. Found that the top 7 categories (`health_beauty`, `watches_gifts`, `bed_bath_table`, `sports_leisure`, `computers_accessories`, `furniture_decor`, `cool_stuff`) account for **49.76%** of revenue, while the top 8 categories exceed 50% (cumulative **53.33%** of merchandise sales).
   - **Top Product Performance**: Identified top-selling individual SKUs by revenue and volume sold.
   - **Geographic State Analysis**: Aggregated orders, revenue, and AOV by customer state.
     - São Paulo (`SP`): R$ 5.20M (38.28% share, 41,750 orders).
@@ -137,17 +137,17 @@ The notebooks are organized into a clear, sequential pipeline:
     - Order Value: Median **R$ 86.90** vs Mean **R$ 137.75** (Max: R$ 13,440).
     - Delivery Lead Time Percentiles: 50th (10.2d), 75th (15.7d), 90th (23.1d), 95th (29.3d), 99th (46.1d).
   - **Hypothesis Testing**:
-    - $H_0$: Delivery performance (on-time vs late) has no effect on customer review scores.
-    - $H_1$: Delivery performance has a statistically significant effect on customer review scores.
+    - $H_0$: There is no difference in the distribution of customer review scores between on-time and late deliveries.
+    - $H_1$: There is a statistically significant difference in review score distributions between on-time and late deliveries.
     - Executed a two-sided **Mann-Whitney U Test**:
       - Statistic: **524,826,310.5**
       - $p$-value: **0.000 ($p < 0.001$)**
-      - *Conclusion*: Reject $H_0$ with overwhelming statistical significance.
+      - *Conclusion*: Reject $H_0$ with overwhelming statistical significance. The results provide strong evidence of a statistically significant negative association between delivery delays and review scores.
   - **Correlation Analysis**:
     - Calculated **Spearman Rank Correlation** between delivery delay (days) and customer review scores:
       - Spearman's $\rho$: **-0.176**
       - $p$-value: **0.000 ($p < 0.001$)**
-      - *Conclusion*: Confirms a statistically significant negative monotonic relationship.
+      - *Conclusion*: Confirms a statistically significant negative monotonic relationship, demonstrating that delivery delays are significantly associated with lower customer review scores.
 - **Outputs**: Statistical validation underpinning executive decision-making and Power BI dashboard design.
 
 ---

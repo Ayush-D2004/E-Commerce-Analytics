@@ -9,7 +9,7 @@ This directory contains the interactive Power BI report (`E-Commerce Analytics.p
 The dashboard comprises **three comprehensive report pages** designed for executive leadership, commercial category managers, and logistics operations teams:
 1. **Page 1: E-Commerce Dashboard** — Executive overview of revenue, order volume, category contribution, and geographic distribution.
 2. **Page 2: Customer and Product Analysis** — Deep dive into customer retention, repeat purchasing behavior, and RFM behavioral segmentation.
-3. **Page 3: Operations and Customer Experience Analysis** — Fulfillment reliability, delivery lead times, regional SLA performance, and review score impact.
+3. **Page 3: Operations and Customer Experience Analysis** — Fulfillment reliability, delivery lead times, regional SLA performance, and review score analysis.
 
 ---
 
@@ -43,7 +43,7 @@ High-level summary of financial performance, seasonal trends, and core marketpla
 
 ## 👥 Page 2: Customer and Product Analysis
 
-Focuses on customer lifetime value, repurchase dynamics, and actionable behavioral clustering through RFM segmentation.
+Focuses on customer lifetime value, repurchase dynamics, and actionable customer profiling through quintile-based RFM segmentation.
 
 ![Page 2: Customer and Product Analysis](Page2.png)
 

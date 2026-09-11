@@ -17,7 +17,7 @@ This project addresses five critical business questions:
 1. **Sales Performance & Growth**: What are the historical revenue drivers, seasonal trends, and high-value product categories?
 2. **Customer Retention**: What proportion of the customer base makes repeat purchases, and how can customers be segmented to maximize customer lifetime value (LTV)?
 3. **Fulfillment & Delivery Reliability**: How reliably are delivery promises kept across different Brazilian states, and what are the operational bottlenecks?
-4. **Impact on Customer Experience**: Does fulfillment speed and delivery delay directly influence customer review ratings? Is this relationship statistically significant?
+4. **Impact on Customer Experience**: Are fulfillment speed and delivery delays significantly associated with lower customer review scores? Is this relationship statistically significant?
 5. **Actionable Growth Levers**: What strategic interventions in logistics, category management, and customer marketing will yield the highest return?
 
 ---
@@ -36,8 +36,8 @@ erDiagram
     olist_orders_dataset }o--|| olist_order_customer_dataset : "customer_id"
     olist_order_items_dataset }o--|| olist_products_dataset : "product_id"
     olist_order_items_dataset }o--|| olist_sellers_dataset : "seller_id"
-    olist_order_customer_dataset }o--|| olist_geolocation_dataset : "zip_code_prefix"
-    olist_sellers_dataset }o--|| olist_geolocation_dataset : "zip_code_prefix"
+    olist_order_customer_dataset }o--o{ olist_geolocation_dataset : "zip_code_prefix"
+    olist_sellers_dataset }o--o{ olist_geolocation_dataset : "zip_code_prefix"
 
     olist_orders_dataset {
         string order_id PK
@@ -96,26 +96,13 @@ erDiagram
         string seller_state
     }
     olist_geolocation_dataset {
-        int geolocation_zip_code_prefix PK
+        int geolocation_zip_code_prefix
         float geolocation_lat
         float geolocation_lng
         string geolocation_city
         string geolocation_state
     }
 ```
-
-#### Dataset Relationship Mapping
-
-| Left Dataset | Key Connection | Right Dataset | Description |
-|---|:---:|---|---|
-| `olist_orders_dataset` | `customer_id` | `olist_order_customer_dataset` | Links orders to purchasing customer details |
-| `olist_orders_dataset` | `order_id` | `olist_order_items_dataset` | Connects orders to individual line items |
-| `olist_orders_dataset` | `order_id` | `olist_order_payments_dataset` | Relates orders to payment transactions and installments |
-| `olist_orders_dataset` | `order_id` | `olist_order_reviews_dataset` | Associates orders with customer feedback and ratings |
-| `olist_order_items_dataset` | `product_id` | `olist_products_dataset` | Maps each line item to product specifications |
-| `olist_order_items_dataset` | `seller_id` | `olist_sellers_dataset` | Identifies the fulfilling merchant for each item |
-| `olist_order_customer_dataset` | `zip_code_prefix` | `olist_geolocation_dataset` | Resolves customer zip codes to geographic coordinates |
-| `olist_sellers_dataset` | `zip_code_prefix` | `olist_geolocation_dataset` | Resolves seller zip codes to geographic coordinates |
 
 ---
 
@@ -128,11 +115,11 @@ The analysis was executed across six focused Jupyter notebooks in Python and a c
 ```
 
 - **Data Cleaning & Preprocessing (`01`)**: Automated data ingestion, resolution of missing delivery timestamps, elimination of corrupted records, and datetime normalization.
-- **Database Storing & Ingestion (`02`)**: Uploaded cleaned tables into a cloud PostgreSQL (NeonDB) warehouse using SQLAlchemy. Validated schema integrity, reconciled financial metrics (**R$ 13.59M** merchandise sales + **R$ 2.25M** freight = **R$ 15.84M** total GMV), and analyzed baseline monthly order volume.
-- **Sales & Product Dynamics (`03`)**: Category-level Pareto analysis (the top 7 categories drive >50% of revenue) and geographic analysis (São Paulo accounts for ~38.3% of revenue and ~42% of order volume). Marketplace cancellation rate verified at **0.63%**.
-- **Customer Segmentation (`04`)**: Discovered that **96.9%** of buyers are one-time purchasers. Designed a quintile-based **RFM model** (Recency, Frequency, Monetary) categorizing customers into 6 tiers: *Champions*, *Loyal*, *Recent*, *At Risk High Value*, *Inactive*, and *Developing*.
+- **Database Storing & Ingestion (`02`)**: Uploaded cleaned tables into a cloud PostgreSQL (NeonDB) warehouse using SQLAlchemy. Validated schema integrity, reconciled financial metrics (**R$ 13.59M** merchandise sales [GMV] + **R$ 2.25M** freight = **R$ 15.84M** total merchandise + freight value), and analyzed baseline monthly order volume.
+- **Sales & Product Dynamics (`03`)**: Category-level Pareto analysis (the top 7 categories account for ~49.8% of revenue, while the top 8 exceed 50% at ~53.3%) and geographic analysis (São Paulo accounts for ~38.3% of revenue and ~42% of order volume). Marketplace cancellation rate verified at **0.63%**.
+- **Customer Segmentation (`04`)**: Discovered that **96.9%** of buyers are one-time purchasers. Designed a quintile-based **RFM model** (Recency, Frequency, Monetary) segmenting customers into 6 behavioral tiers: *Champions*, *Loyal*, *Recent*, *At Risk High Value*, *Inactive*, and *Developing*.
 - **Logistics & Customer Experience (`05`)**: Evaluated order fulfillment cycles. Established baseline SLA metrics: **91.89% on-time delivery** vs **8.11% late delivery**. Mapped geographical fulfillment disparities across states and demonstrated that late orders experience a severe decline in review ratings.
-- **Statistical EDA & Hypothesis Testing (`06`)**: Distribution analysis showing strong right-skew in order value (median R$ 86.90 vs mean R$ 137.75). Proved via **Mann-Whitney U Test** ($p < 0.001$) and **Spearman Rank Correlation** ($\rho = -0.176, p < 0.001$) that delivery delays have a statistically significant negative impact on review scores.
+- **Statistical EDA & Hypothesis Testing (`06`)**: Distribution analysis showing strong right-skew in order value (median R$ 86.90 vs mean R$ 137.75). Demonstrated via **Mann-Whitney U Test** ($p < 0.001$) and **Spearman Rank Correlation** ($\rho = -0.176, p < 0.001$) that delivery delays are significantly associated with lower customer review scores (providing strong evidence of a statistically significant negative association).
 
 > ℹ️ *For detailed methodology, queries, and technical walkthroughs for each notebook, see the [Notebooks Directory Documentation](notebooks/README.md).*  
 > 📈 *For the comprehensive strategic business report, see [Executive Insights Report](reports/INSIGHTS.md).*
@@ -170,13 +157,13 @@ Explores customer retention, repeat purchasing patterns, and RFM-based behaviora
 ---
 
 ### Page 3: Operations and Customer Experience Analysis
-Examines delivery reliability, fulfillment delays, shipping cost distribution, and their direct impact on customer ratings.
+Examines delivery reliability, fulfillment delays, shipping cost distribution, and their association with customer satisfaction ratings.
 
 ![Operations and Customer Experience Analysis](power%20bi/Page3.png)
 
 - **Fulfillment SLA**: 91.89% on-time delivery rate (89K orders) vs 8.11% late delivery rate (8K orders).
 - **Delivery Timeline**: Mean delivery duration of 12.5 days (median 10.0 days).
-- **Impact of Delay on Ratings**:
+- **Delivery Delays & Review Ratings**:
   - **On-Time**: ~4.3 / 5.0 average review rating.
   - **1–3 Days Late**: ~3.3 rating.
   - **4–7 Days Late**: ~2.1 rating.

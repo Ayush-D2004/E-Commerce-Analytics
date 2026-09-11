@@ -9,12 +9,12 @@ An executive-level synthesis of market dynamics, customer behavior, fulfillment 
 Olist operates a nationwide e-commerce marketplace connecting small-to-medium Brazilian merchants with consumers across all 27 federative units. This analytics project evaluated transactional records, customer feedback, and delivery logistics to uncover operational bottlenecks and growth opportunities.
 
 ### Key Headline Insights
-- **Total Marketplace Volume**: Generated **R$ 13.59M** in merchandise sales and **R$ 2.25M** in freight charges across **99,441 orders** (Combined GMV: **R$ 15.84M**).
+- **Total Marketplace Volume**: Generated **R$ 13.59M** in merchandise sales (GMV) and **R$ 2.25M** in freight charges across **99,441 orders** (Total merchandise + freight value: **R$ 15.84M**).
 - **The Retention Hurdle**: **96.9%** of buyers purchased only once. Repeat purchasers accounted for just **3.1%** of the customer base, representing a major untapped driver for customer lifetime value (LTV).
-- **Category Concentration**: The marketplace follows an **80/20 Pareto rule**—the top 7 categories (`health_beauty`, `watches_gifts`, `bed_bath_table`, `sports_leisure`, `computers_accessories`, `furniture_decor`, `cool_stuff`) generate over **50%** of total revenue.
+- **Category Concentration**: The marketplace follows an **80/20 Pareto pattern**—the top 7 categories (`health_beauty`, `watches_gifts`, `bed_bath_table`, `sports_leisure`, `computers_accessories`, `furniture_decor`, `cool_stuff`) account for **49.76%** of revenue, while the top 8 exceed 50% (generating **53.33%** of total merchandise revenue).
 - **Geographic Dominance**: The Southeast region drives marketplace demand. São Paulo (`SP`) alone accounts for **38.28%** of revenue and **41.98%** of order volume.
 - **Fulfillment vs. Satisfaction Link**: Marketplace fulfillment maintains a **91.89% on-time rate**. However, when orders are late, customer ratings drop precipitously from **4.29★ to 1.7★**.
-- **Statistical Significance**: A non-parametric **Mann-Whitney U Test** ($p < 0.001$) and **Spearman Rank Correlation** ($\rho = -0.176, p < 0.001$) confirm that delivery delays exert a statistically significant negative impact on customer ratings.
+- **Statistical Significance**: A non-parametric **Mann-Whitney U Test** ($p < 0.001$) and **Spearman Rank Correlation** ($\rho = -0.176, p < 0.001$) provide strong evidence of a statistically significant negative association between delivery delays and review scores.
 
 ---
 
@@ -35,7 +35,7 @@ Marketplace gross merchandise value grew consistently throughout 2017 and 2018:
 
 ## 3. Product & Category Concentration (Pareto Analysis)
 
-Marketplace demand is concentrated within a small cluster of dominant merchandise categories:
+Marketplace demand is concentrated within a small subset of dominant merchandise categories:
 
 | Rank | Category (English) | Revenue (R$) | Revenue Share (%) | Cumulative Share (%) |
 |:---:|---|:---:|:---:|:---:|
@@ -49,14 +49,14 @@ Marketplace demand is concentrated within a small cluster of dominant merchandis
 | 8 | `housewares` | R$ 0.49M | 3.57% | 53.33% |
 
 ### Strategic Implications
-- **Core Revenue Drivers**: The top 7 categories drive nearly half of marketplace GMV, while the remaining ~64 categories account for the long tail.
+- **Core Revenue Drivers**: The top 7 categories account for ~49.8% of merchandise revenue (and the top 8 exceed 50% at 53.3%), while the remaining ~63 categories account for the long tail.
 - **Supply Stability**: Supply disruptions or seller churn in `health_beauty` and `watches_gifts` have a disproportionate impact on top-line platform revenue.
 
 ---
 
 ## 4. Geographic Distribution & Regional Disparities
 
-Demand and supply are heavily clustered in the industrialized Southeast region:
+Demand and supply are heavily concentrated in the industrialized Southeast region:
 
 ### State-by-State Revenue Contribution
 - **São Paulo (`SP`)**: R$ 5.20M (38.28% of revenue, 41,750 orders).
@@ -81,7 +81,7 @@ While demand is concentrated in the Southeast, deliveries to the North (`AM`, `P
 - **Core Problem**: The business relies almost exclusively on continuous, costly customer acquisition rather than recurring lifetime value.
 
 ### 5.2 RFM Behavioral Segmentation Model
-Using Recency (days since last purchase), Frequency (distinct orders), and Monetary value (total spend), customers were clustered into six tiers:
+Using Recency (days since last purchase), Frequency (distinct orders), and Monetary value (total spend), customers were segmented into six behavioral tiers using quintile-based RFM scoring:
 
 | Segment | Customers | Avg. Recency (Days) | Avg. Frequency | Avg. Spend (R$) | Total Revenue (R$) | Strategic Focus |
 |---|:---:|:---:|:---:|:---:|:---:|---|
@@ -119,7 +119,7 @@ Late delivery rates vary dramatically across states:
 
 ---
 
-## 7. Delivery Delay Impact on Customer Satisfaction
+## 7. Delivery Delays and Customer Satisfaction
 
 Customer review scores are heavily polarized across the marketplace:
 - **5 Stars**: 57.78% (57,330 reviews)
@@ -130,7 +130,7 @@ Customer review scores are heavily polarized across the marketplace:
 - **Average Rating**: **4.09 / 5.0**
 
 ### Review Score Degradation Curve
-Delivery delays correlate directly with lower customer satisfaction:
+Delivery delays are significantly associated with lower customer review scores:
 
 ```
 Average Review Rating by Delivery Performance
@@ -150,20 +150,20 @@ When an order arrives even 1 to 3 days late, customer rating drops by **~1 full 
 
 To verify whether the relationship between delivery delays and customer review scores was statistically meaningful rather than random variance, two rigorous tests were conducted:
 
-### Test 1: Non-Parametric Difference in Means (Mann-Whitney U Test)
-- **Null Hypothesis ($H_0$)**: Delivery timeliness (On-Time vs. Late) has no effect on customer review scores.
+### Test 1: Non-Parametric Difference in Distributions (Mann-Whitney U Test)
+- **Null Hypothesis ($H_0$)**: There is no difference in the distribution of customer review scores between on-time and late deliveries.
 - **Alternative Hypothesis ($H_1$)**: Orders delivered late receive statistically different review scores than on-time orders.
 - **Test Result**:
   - Mann-Whitney U Statistic: **524,826,310.5**
   - $p$-value: **0.000 ($p < 0.001$)**
-  - **Conclusion**: Reject $H_0$. Delivery delay is definitively linked to lower customer review scores.
+  - **Conclusion**: Reject $H_0$. The results provide strong evidence of a statistically significant negative association between delivery delays and review scores.
 
 ### Test 2: Monotonic Association (Spearman Rank Correlation)
 - **Objective**: Quantify whether review scores decrease monotonically as delivery delays increase.
 - **Test Result**:
   - Spearman's $\rho$: **-0.176**
   - $p$-value: **0.000 ($p < 0.001$)**
-  - **Conclusion**: Confirms a statistically significant negative association. While product quality and merchant communication contribute to ratings, delivery punctuality is a primary operational lever.
+  - **Conclusion**: Confirms a statistically significant negative monotonic relationship. While product quality and merchant communication contribute to ratings, delivery delays are significantly associated with lower customer review scores.
 
 ---
 
@@ -182,7 +182,7 @@ Based on the combined sales, customer, operational, and statistical findings, th
 - **VIP Rewards for Champions**: Offer exclusive loyalty perks, free shipping vouchers, or priority customer support to the **6,651 Champions** to protect platform advocacy.
 
 ### 3. Category Management & Assortment Focus
-- **Protect Top-7 Categories**: Focus seller onboarding and merchant support on the 7 categories driving >50% of GMV. Ensure competitive pricing and broad SKU variety.
+- **Protect Top Product Categories**: Focus seller onboarding and merchant support on the top 8 categories driving ~53% of merchandise revenue (with the top 7 driving ~49.8%). Ensure competitive pricing and broad SKU variety.
 - **Audit High-Freight Friction Categories**: Investigate categories where shipping costs represent an unusually high share of cart value (e.g., heavy `furniture_decor`), introducing merchant flat-rate shipping incentives.
 
 ### 4. Merchant Governance & Operational Incentives
